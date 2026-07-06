@@ -2,7 +2,24 @@ services:
   api:
     build: .
     environment:
-      # Para usar um LLM real, aponte para um Ollama e ajuste app/main.py:
-      OLLAMA_HOST: http://host.docker.internal:11434
+      # LLM e embedder plugaveis. Por padrao rodam offline (stub + hashing).
+      # Para usar modelos reais (requer o servico ollama abaixo, perfil "real"):
+      #   LLM: ollama
+      #   EMBEDDER: fastembed
+      LLM: ${LLM:-stub}
+      EMBEDDER: ${EMBEDDER:-hashing}
+      OLLAMA_HOST: http://ollama:11434
     ports:
       - "8000:8000"
+
+  # Servico opcional: sobe com `docker compose --profile real up`
+  ollama:
+    image: ollama/ollama:latest
+    profiles: ["real"]
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama:/root/.ollama
+
+volumes:
+  ollama:

@@ -2,12 +2,13 @@ from fastapi.testclient import TestClient
 
 from app.api.app import create_app
 from app.application.rag_service import RagService
+from app.infrastructure.hashing_embedder import HashingEmbedder
 from app.infrastructure.llm_stub import StubLLM
 from app.infrastructure.memory_store import InMemoryVectorStore
 
 
 def _client() -> TestClient:
-    return TestClient(create_app(RagService(InMemoryVectorStore(), StubLLM())))
+    return TestClient(create_app(RagService(InMemoryVectorStore(), StubLLM(), HashingEmbedder())))
 
 
 def test_health():

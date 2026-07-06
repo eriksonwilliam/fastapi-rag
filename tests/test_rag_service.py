@@ -1,10 +1,13 @@
 from app.application.rag_service import RagService
+from app.infrastructure.hashing_embedder import HashingEmbedder
 from app.infrastructure.llm_stub import StubLLM
 from app.infrastructure.memory_store import InMemoryVectorStore
 
 
 def _service() -> RagService:
-    return RagService(InMemoryVectorStore(), StubLLM(), chunk_size=40, overlap=10)
+    return RagService(
+        InMemoryVectorStore(), StubLLM(), HashingEmbedder(), chunk_size=40, overlap=10
+    )
 
 
 def test_ingest_returns_chunk_count():

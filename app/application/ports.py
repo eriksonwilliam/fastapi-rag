@@ -16,6 +16,12 @@ class SearchHit:
     score: float
 
 
+class Embedder(Protocol):
+    """Port de saida: transforma texto em vetor."""
+
+    def embed(self, text: str) -> list[float]: ...
+
+
 class VectorStore(Protocol):
     """Port de saida: indice vetorial."""
 

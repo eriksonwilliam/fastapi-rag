@@ -57,10 +57,21 @@ uvicorn app.main:app --reload      # http://localhost:8000  (Swagger em /docs)
 docker compose up --build
 ```
 
-### Usar um LLM real (Ollama)
+### Modelos reais (sem tocar no resto do código)
 
-Suba um [Ollama](https://ollama.com) local e, em `app/main.py`, troque
-`StubLLM()` por `OllamaLLM()` (usa `OLLAMA_HOST`, padrão `http://localhost:11434`).
+O **embedder** e o **LLM** são *ports* — trocáveis por variável de ambiente:
+
+```bash
+pip install -r requirements-real.txt   # adiciona o fastembed (embedder semântico, ONNX)
+
+# sobe a API + um Ollama local (perfil "real"):
+docker compose --profile real up --build
+# apontando os adapters reais:
+#   EMBEDDER=fastembed   -> embeddings semânticos de verdade (BAAI/bge-small)
+#   LLM=ollama           -> geração por um LLM local (Ollama)
+```
+
+Os padrões (`hashing` + `stub`) rodam **offline**, sem baixar modelo.
 
 ## Endpoints
 

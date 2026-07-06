@@ -1,0 +1,3 @@
+# Dependencias opcionais para os adapters "reais" (embedder semantico).
+-r requirements.txt
+fastembed>=0.4

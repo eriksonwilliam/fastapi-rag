@@ -5,7 +5,11 @@ pythonpath = ["."]
 
 [tool.coverage.run]
 source = ["app"]
-omit = ["app/main.py", "app/infrastructure/llm_ollama.py"]
+omit = [
+    "app/main.py",
+    "app/infrastructure/llm_ollama.py",
+    "app/infrastructure/fastembed_embedder.py",
+]
 
 [tool.coverage.report]
 show_missing = true
