@@ -1,0 +1,8 @@
+services:
+  api:
+    build: .
+    environment:
+      # Para usar um LLM real, aponte para um Ollama e ajuste app/main.py:
+      OLLAMA_HOST: http://host.docker.internal:11434
+    ports:
+      - "8000:8000"
