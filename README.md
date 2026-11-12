@@ -10,7 +10,7 @@ run offline. Optional adapters connect FastEmbed and Ollama.
   in-memory store. Other documents are preserved. Embeddings are prepared before
   replacement, so an embedding failure leaves the previous document available.
 - Concurrent replacements cannot mix versions within one document. The last
-  completed replacement wins; there is no durable storage or version history.
+  completed replacement wins; the default in-memory adapter has no durable storage or version history. An optional SQLite adapter is documented below.
 - `RagService.retrieve()` separates retrieval from generation for evaluation.
 
 ```bash
@@ -165,5 +165,35 @@ is unchanged; it does not yet abstain automatically.
 ### Next milestones
 
 1. Expand and separately label development/held-out datasets; execute comparisons.
-2. Add a persistent vector-store adapter with restart and atomic replacement tests.
+2. Exercise crash recovery, backups and embedding metadata validation for the optional SQLite adapter.
 3. Define abstention and evaluate generated answers separately from retrieval.
+
+
+## Optional local persistence (SQLite)
+
+The default remains the in-memory adapter. To preserve chunks across application
+restarts without adding a database server:
+
+```bash
+VECTOR_STORE=sqlite SQLITE_PATH=./rag.sqlite3 uvicorn app.main:app --port 8000
+```
+
+Use the same file path after restart. The parent directory must exist. In Docker,
+mount a writable volume and set SQLITE_PATH to its file path; the default container
+filesystem is not a backup. Keep the index out of git: it contains source texts.
+
+Replacement deletes and inserts the complete document batch in one SQLite
+transaction. A failed insertion rolls back the old batch. Embeddings are still
+prepared before replacement; embedder failure preserves existing data. Tests cover
+reopening the file, a shorter replacement, other documents, rollback, and concurrent
+writes through separate store instances. The last successful transaction wins.
+Equal scores are ordered by document ID and chunk index, unlike the in-memory
+adapter's ingestion order; do not silently mix these adapters in a benchmark.
+
+This is a local reference adapter with exhaustive cosine search, not a vector
+extension or ANN index. It has no schema-migration framework, embedding-model
+metadata validation, backup automation, document version history, access control,
+or distributed coordination. Use a fresh index when changing embedding models.
+SQLite serializes writers; it is not a claim of high-throughput multi-node scaling.
+No throughput or latency improvement was measured. Container/process-kill recovery
+and deployment-volume behavior require additional operational validation.
