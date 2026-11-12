@@ -7,7 +7,10 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from app.main import default_service  # noqa: E402
+from app.application.rag_service import RagService  # noqa: E402
+from app.infrastructure.hashing_embedder import HashingEmbedder  # noqa: E402
+from app.infrastructure.llm_stub import StubLLM  # noqa: E402
+from app.infrastructure.memory_store import InMemoryVectorStore  # noqa: E402
 
 
 def main():
@@ -16,6 +19,14 @@ def main():
         "--dataset", type=Path, default=Path(__file__).with_name("retrieval_cases.json")
     )
     parser.add_argument("--top-k", type=int, default=3)
+    parser.add_argument("--embedder", choices=["hashing", "fastembed"], default="hashing")
+    parser.add_argument("--model", default="BAAI/bge-small-en-v1.5")
+    parser.add_argument(
+        "--min-score",
+        type=float,
+        default=0.0,
+        help="Fixed retrieval cutoff; calibrate on a separate development set",
+    )
     args = parser.parse_args()
     if args.top_k < 1:
         parser.error("--top-k must be positive")
@@ -24,14 +35,23 @@ def main():
         parser.error("dataset must contain at least one question")
     document_ids = {document["id"] for document in dataset["documents"]}
     for case in dataset["questions"]:
-        if not case["expected_documents"] or not set(case["expected_documents"]) <= document_ids:
-            parser.error("each question must reference at least one existing document")
-    service = default_service()
+        if not set(case["expected_documents"]) <= document_ids:
+            parser.error(
+                "expected_documents must reference existing documents or be empty for negatives"
+            )
+    embedder = HashingEmbedder()
+    if args.embedder == "fastembed":
+        from app.infrastructure.fastembed_embedder import FastEmbedEmbedder
+
+        embedder = FastEmbedEmbedder(args.model)
+    service = RagService(InMemoryVectorStore(), StubLLM(), embedder)
     for document in dataset["documents"]:
         service.ingest(document["id"], document["text"])
     results = []
     for case in dataset["questions"]:
-        hits = service.retrieve(case["question"], args.top_k)
+        hits = [
+            h for h in service.retrieve(case["question"], args.top_k) if h.score > args.min_score
+        ]
         retrieved = list(dict.fromkeys(hit.chunk.doc_id for hit in hits))
         relevant = set(case["expected_documents"])
         matches = relevant.intersection(retrieved)
@@ -42,19 +62,39 @@ def main():
             {
                 "question": case["question"],
                 "retrieved_documents": retrieved,
-                "recall_at_k": len(matches) / len(relevant),
+                "answerable": bool(relevant),
+                "recall_at_k": len(matches) / len(relevant) if relevant else None,
+                "negative_has_context": bool(retrieved) if not relevant else None,
                 "reciprocal_rank": reciprocal_rank,
             }
         )
     count = len(results)
+    positives = [r for r in results if r["answerable"]]
+    negatives = [r for r in results if not r["answerable"]]
     print(
         json.dumps(
             {
                 "scope": "document retrieval on a small PT/EN fixture",
                 "top_k_chunks": args.top_k,
+                "embedder": args.embedder,
+                "model": args.model if args.embedder == "fastembed" else "offline-hashing",
+                "min_score_exclusive": args.min_score,
+                "documents": len(document_ids),
+                "answerable_questions": len(positives),
+                "negative_questions": len(negatives),
+                "negative_context_rate": (
+                    sum(r["negative_has_context"] for r in negatives) / len(negatives)
+                )
+                if negatives
+                else None,
                 "questions": count,
-                "mean_recall_at_k": sum(r["recall_at_k"] for r in results) / count,
-                "mean_reciprocal_rank": sum(r["reciprocal_rank"] for r in results) / count,
+                "mean_recall_at_k": sum(r["recall_at_k"] for r in positives) / len(positives)
+                if positives
+                else None,
+                "mean_reciprocal_rank": sum(r["reciprocal_rank"] for r in positives)
+                / len(positives)
+                if positives
+                else None,
                 "results": results,
             },
             ensure_ascii=False,
