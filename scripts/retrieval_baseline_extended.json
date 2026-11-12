@@ -1,0 +1,232 @@
+{
+  "scope": "document retrieval on a small PT/EN fixture",
+  "top_k_chunks": 3,
+  "embedder": "hashing",
+  "model": "offline-hashing",
+  "min_score_exclusive": 0.0,
+  "documents": 12,
+  "answerable_questions": 14,
+  "negative_questions": 4,
+  "negative_context_rate": 1.0,
+  "questions": 18,
+  "mean_recall_at_k": 0.8571428571428571,
+  "mean_reciprocal_rank": 0.8095238095238095,
+  "results": [
+    {
+      "question": "MCP conecta agentes a quais ferramentas?",
+      "retrieved_documents": [
+        "mcp-pt",
+        "auth-en",
+        "dlq-pt"
+      ],
+      "answerable": true,
+      "recall_at_k": 1.0,
+      "negative_has_context": null,
+      "reciprocal_rank": 1.0
+    },
+    {
+      "question": "Como RAG recupera documentos para contexto?",
+      "retrieved_documents": [
+        "rag-pt",
+        "cache-pt",
+        "inbox-pt"
+      ],
+      "answerable": true,
+      "recall_at_k": 1.0,
+      "negative_has_context": null,
+      "reciprocal_rank": 1.0
+    },
+    {
+      "question": "Where does an outbox store pending events?",
+      "retrieved_documents": [
+        "events-en",
+        "retry-en",
+        "trace-pt"
+      ],
+      "answerable": true,
+      "recall_at_k": 1.0,
+      "negative_has_context": null,
+      "reciprocal_rank": 1.0
+    },
+    {
+      "question": "What uses traces and metrics to investigate latency?",
+      "retrieved_documents": [
+        "telemetry-en",
+        "metrics-en",
+        "retry-en"
+      ],
+      "answerable": true,
+      "recall_at_k": 1.0,
+      "negative_has_context": null,
+      "reciprocal_rank": 1.0
+    },
+    {
+      "question": "How do agents access engineering tools?",
+      "retrieved_documents": [
+        "auth-en",
+        "dlq-pt",
+        "retry-en"
+      ],
+      "answerable": true,
+      "recall_at_k": 0.0,
+      "negative_has_context": null,
+      "reciprocal_rank": 0.0
+    },
+    {
+      "question": "Como investigar latencia com metricas?",
+      "retrieved_documents": [
+        "mcp-pt",
+        "dlq-pt",
+        "auth-en"
+      ],
+      "answerable": true,
+      "recall_at_k": 0.0,
+      "negative_has_context": null,
+      "reciprocal_rank": 0.0
+    },
+    {
+      "question": "Como evitar repetir efeitos de eventos com inbox?",
+      "retrieved_documents": [
+        "inbox-pt",
+        "cache-pt",
+        "rag-pt"
+      ],
+      "answerable": true,
+      "recall_at_k": 1.0,
+      "negative_has_context": null,
+      "reciprocal_rank": 1.0
+    },
+    {
+      "question": "How do retries handle transient failures?",
+      "retrieved_documents": [
+        "retry-en",
+        "modulith-pt",
+        "telemetry-en"
+      ],
+      "answerable": true,
+      "recall_at_k": 1.0,
+      "negative_has_context": null,
+      "reciprocal_rank": 1.0
+    },
+    {
+      "question": "Para onde vao mensagens que esgotaram tentativas?",
+      "retrieved_documents": [
+        "dlq-pt",
+        "cache-pt",
+        "rag-pt"
+      ],
+      "answerable": true,
+      "recall_at_k": 1.0,
+      "negative_has_context": null,
+      "reciprocal_rank": 1.0
+    },
+    {
+      "question": "What decides access to a resource?",
+      "retrieved_documents": [
+        "auth-en",
+        "mcp-pt",
+        "metrics-en"
+      ],
+      "answerable": true,
+      "recall_at_k": 1.0,
+      "negative_has_context": null,
+      "reciprocal_rank": 1.0
+    },
+    {
+      "question": "Como invalidar caches quando os dados mudam?",
+      "retrieved_documents": [
+        "auth-en",
+        "telemetry-en",
+        "cache-pt"
+      ],
+      "answerable": true,
+      "recall_at_k": 1.0,
+      "negative_has_context": null,
+      "reciprocal_rank": 0.3333333333333333
+    },
+    {
+      "question": "Como um trace correlaciona spans?",
+      "retrieved_documents": [
+        "trace-pt",
+        "inbox-pt",
+        "retry-en"
+      ],
+      "answerable": true,
+      "recall_at_k": 1.0,
+      "negative_has_context": null,
+      "reciprocal_rank": 1.0
+    },
+    {
+      "question": "Should metric labels use individual customer identifiers?",
+      "retrieved_documents": [
+        "metrics-en",
+        "cache-pt",
+        "auth-en"
+      ],
+      "answerable": true,
+      "recall_at_k": 1.0,
+      "negative_has_context": null,
+      "reciprocal_rank": 1.0
+    },
+    {
+      "question": "Como evitar dependencias ciclicas em monolito modular?",
+      "retrieved_documents": [
+        "modulith-pt",
+        "retry-en",
+        "cache-pt"
+      ],
+      "answerable": true,
+      "recall_at_k": 1.0,
+      "negative_has_context": null,
+      "reciprocal_rank": 1.0
+    },
+    {
+      "question": "Qual a cotacao do dolar agora?",
+      "retrieved_documents": [
+        "mcp-pt",
+        "auth-en",
+        "trace-pt"
+      ],
+      "answerable": false,
+      "recall_at_k": null,
+      "negative_has_context": true,
+      "reciprocal_rank": 0.0
+    },
+    {
+      "question": "Who won the football world cup in 2026?",
+      "retrieved_documents": [
+        "events-en",
+        "metrics-en",
+        "inbox-pt"
+      ],
+      "answerable": false,
+      "recall_at_k": null,
+      "negative_has_context": true,
+      "reciprocal_rank": 0.0
+    },
+    {
+      "question": "Qual medicamento devo tomar para febre?",
+      "retrieved_documents": [
+        "trace-pt",
+        "rag-pt",
+        "cache-pt"
+      ],
+      "answerable": false,
+      "recall_at_k": null,
+      "negative_has_context": true,
+      "reciprocal_rank": 0.0
+    },
+    {
+      "question": "What is the password for the production database?",
+      "retrieved_documents": [
+        "events-en",
+        "retry-en",
+        "metrics-en"
+      ],
+      "answerable": false,
+      "recall_at_k": null,
+      "negative_has_context": true,
+      "reciprocal_rank": 0.0
+    }
+  ]
+}
