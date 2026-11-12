@@ -136,3 +136,34 @@ ruff check . && ruff format --check .
 ## Licença
 
 MIT.
+
+## Expanded retrieval experiment (2026-11-12)
+
+```bash
+python scripts/evaluate_retrieval.py --dataset scripts/retrieval_cases_extended.json --top-k 3
+# Optional comparison: install requirements-real.txt first; downloads a model.
+python scripts/evaluate_retrieval.py --dataset scripts/retrieval_cases_extended.json --top-k 3 --embedder fastembed --model BAAI/bge-small-en-v1.5
+```
+
+The original 4-document fixture remains unchanged. The extended handwritten fixture
+has 12 documents, 14 answerable questions and 4 unanswerable questions. It includes
+nearby concepts (outbox/inbox, traces/metrics) as distractors. Use identical dataset,
+top-k and cutoff when comparing embeddings; record model, versions and output.
+Scores across models are not calibrated probabilities. The English model above is
+an example, not a claim of multilingual suitability. No real-model comparison was
+executed in this change.
+
+`retrieval_baseline_extended.json` records the offline hashing baseline. Recall and
+MRR exclude unanswerable questions. `negative_context_rate` measures how often a
+negative still receives a retrieved chunk above the exclusive `--min-score` cutoff.
+It does **not** measure generated-answer hallucination or API abstention. At the
+baseline cutoff 0, all four negatives retrieve context: a visible limitation, not a
+successful safety gate. Tune cutoffs on a separate development set, not this report.
+The fixture is still too small for production conclusions. Application query behavior
+is unchanged; it does not yet abstain automatically.
+
+### Next milestones
+
+1. Expand and separately label development/held-out datasets; execute comparisons.
+2. Add a persistent vector-store adapter with restart and atomic replacement tests.
+3. Define abstention and evaluate generated answers separately from retrieval.
