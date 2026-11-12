@@ -3,7 +3,7 @@ import os
 import uvicorn
 
 from app.api.app import create_app
-from app.application.ports import LLM, Embedder
+from app.application.ports import LLM, Embedder, VectorStore
 from app.application.rag_service import RagService
 from app.infrastructure.hashing_embedder import HashingEmbedder
 from app.infrastructure.llm_stub import StubLLM
@@ -26,8 +26,16 @@ def build_llm() -> LLM:
     return StubLLM()
 
 
+def build_store() -> VectorStore:
+    if os.getenv("VECTOR_STORE") == "sqlite":  # pragma: no cover
+        from app.infrastructure.sqlite_store import SqliteVectorStore
+
+        return SqliteVectorStore(os.getenv("SQLITE_PATH", "rag.sqlite3"))
+    return InMemoryVectorStore()
+
+
 def default_service() -> RagService:
-    return RagService(InMemoryVectorStore(), build_llm(), build_embedder())
+    return RagService(build_store(), build_llm(), build_embedder())
 
 
 app = create_app(default_service())
