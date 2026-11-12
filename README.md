@@ -1,5 +1,37 @@
 # fastapi-rag
 
+A reference RAG service with replaceable retrieval and generation components.
+Built with Python and FastAPI; the default hashing embedder and stub generator
+run offline. Optional adapters connect FastEmbed and Ollama.
+
+### Reliability and retrieval evaluation
+
+- Reingesting an existing `doc_id` atomically replaces its previous chunks in the
+  in-memory store. Other documents are preserved. Embeddings are prepared before
+  replacement, so an embedding failure leaves the previous document available.
+- Concurrent replacements cannot mix versions within one document. The last
+  completed replacement wins; there is no durable storage or version history.
+- `RagService.retrieve()` separates retrieval from generation for evaluation.
+
+```bash
+pip install -r requirements-dev.txt
+python scripts/evaluate_retrieval.py --top-k 3
+pytest
+```
+
+The committed fixture contains **4 short documents and 6 questions in PT/EN**.
+With the default hashing embedder, the measured mean document recall in the top
+3 chunks is **0.8333**, and mean reciprocal rank over deduplicated document IDs
+is **0.7222**. One cross-language question misses its expected document. Tied
+scores retain ingestion order, so a weak result can still appear in the top 3.
+These are diagnostic fixture results, not evidence of production accuracy,
+semantic understanding, answer faithfulness, or multilingual capability.
+Use a representative labeled dataset before comparing embedding models.
+`EMBEDDER=fastembed` selects the optional real adapter; no generation is run by
+this evaluation script. The top-k limit counts chunks, not unique documents.
+
+### Documentação em português
+
 Serviço de **RAG** (Retrieval-Augmented Generation) em **Python + FastAPI**:
 você envia documentos, faz uma pergunta, e o serviço **recupera** os trechos
 relevantes e **gera** uma resposta ancorada neles. Template limpo da pipeline de
