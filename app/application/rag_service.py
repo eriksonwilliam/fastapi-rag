@@ -30,8 +30,12 @@ class RagService:
         self._store.add(chunks)
         return len(chunks)
 
+    def retrieve(self, question: str, top_k: int = 4) -> list[SearchHit]:
+        """Retrieve context independently of generation, including for evaluation."""
+        return self._store.search(self._embedder.embed(question), top_k)
+
     def query(self, question: str, top_k: int = 4) -> tuple[str, list[SearchHit]]:
-        hits = self._store.search(self._embedder.embed(question), top_k)
+        hits = self.retrieve(question, top_k)
         context = [hit.chunk.text for hit in hits]
         answer = self._llm.generate(question, context)
         return answer, hits
