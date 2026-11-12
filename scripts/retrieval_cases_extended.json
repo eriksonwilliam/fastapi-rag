@@ -1,0 +1,155 @@
+{
+  "documents": [
+    {
+      "id": "mcp-pt",
+      "text": "MCP conecta agentes a ferramentas de engenharia com contratos explicitos."
+    },
+    {
+      "id": "rag-pt",
+      "text": "RAG recupera trechos de documentos para fornecer contexto ao modelo."
+    },
+    {
+      "id": "events-en",
+      "text": "An outbox stores business changes and pending events in the same database transaction."
+    },
+    {
+      "id": "telemetry-en",
+      "text": "Observability uses traces and metrics to investigate latency and errors."
+    },
+    {
+      "id": "inbox-pt",
+      "text": "A inbox registra identificadores de eventos processados para evitar repetir efeitos locais."
+    },
+    {
+      "id": "retry-en",
+      "text": "Retries repeat transient failures with exponential backoff and jitter."
+    },
+    {
+      "id": "dlq-pt",
+      "text": "Uma dead letter queue recebe mensagens que esgotaram as tentativas de processamento."
+    },
+    {
+      "id": "auth-en",
+      "text": "Authentication verifies identity. Authorization decides access to a resource."
+    },
+    {
+      "id": "cache-pt",
+      "text": "Caches precisam de prazo de validade e estrategia de invalidacao para dados alterados."
+    },
+    {
+      "id": "trace-pt",
+      "text": "Um trace correlaciona spans de uma requisicao entre servicos."
+    },
+    {
+      "id": "metrics-en",
+      "text": "Metric labels should use route templates rather than individual customer identifiers."
+    },
+    {
+      "id": "modulith-pt",
+      "text": "Um monolito modular define interfaces e impede dependencias ciclicas entre modulos."
+    }
+  ],
+  "questions": [
+    {
+      "question": "MCP conecta agentes a quais ferramentas?",
+      "expected_documents": [
+        "mcp-pt"
+      ]
+    },
+    {
+      "question": "Como RAG recupera documentos para contexto?",
+      "expected_documents": [
+        "rag-pt"
+      ]
+    },
+    {
+      "question": "Where does an outbox store pending events?",
+      "expected_documents": [
+        "events-en"
+      ]
+    },
+    {
+      "question": "What uses traces and metrics to investigate latency?",
+      "expected_documents": [
+        "telemetry-en"
+      ]
+    },
+    {
+      "question": "How do agents access engineering tools?",
+      "expected_documents": [
+        "mcp-pt"
+      ]
+    },
+    {
+      "question": "Como investigar latencia com metricas?",
+      "expected_documents": [
+        "telemetry-en"
+      ]
+    },
+    {
+      "question": "Como evitar repetir efeitos de eventos com inbox?",
+      "expected_documents": [
+        "inbox-pt"
+      ]
+    },
+    {
+      "question": "How do retries handle transient failures?",
+      "expected_documents": [
+        "retry-en"
+      ]
+    },
+    {
+      "question": "Para onde vao mensagens que esgotaram tentativas?",
+      "expected_documents": [
+        "dlq-pt"
+      ]
+    },
+    {
+      "question": "What decides access to a resource?",
+      "expected_documents": [
+        "auth-en"
+      ]
+    },
+    {
+      "question": "Como invalidar caches quando os dados mudam?",
+      "expected_documents": [
+        "cache-pt"
+      ]
+    },
+    {
+      "question": "Como um trace correlaciona spans?",
+      "expected_documents": [
+        "trace-pt"
+      ]
+    },
+    {
+      "question": "Should metric labels use individual customer identifiers?",
+      "expected_documents": [
+        "metrics-en"
+      ]
+    },
+    {
+      "question": "Como evitar dependencias ciclicas em monolito modular?",
+      "expected_documents": [
+        "modulith-pt"
+      ]
+    },
+    {
+      "question": "Qual a cotacao do dolar agora?",
+      "expected_documents": []
+    },
+    {
+      "question": "Who won the football world cup in 2026?",
+      "expected_documents": []
+    },
+    {
+      "question": "Qual medicamento devo tomar para febre?",
+      "expected_documents": []
+    },
+    {
+      "question": "What is the password for the production database?",
+      "expected_documents": []
+    }
+  ],
+  "notes": "Handwritten educational fixture; not a production benchmark. Empty labels are unanswerable questions; threshold is retrieval-only and does not implement API abstention."
+}
