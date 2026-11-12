@@ -1,0 +1,16 @@
+{
+  "documents": [
+    {"id": "mcp-pt", "text": "MCP conecta agentes a ferramentas de engenharia com contratos explicitos."},
+    {"id": "rag-pt", "text": "RAG recupera trechos de documentos para fornecer contexto ao modelo."},
+    {"id": "events-en", "text": "An outbox stores business changes and pending events in the same database transaction."},
+    {"id": "telemetry-en", "text": "Observability uses traces and metrics to investigate latency and errors."}
+  ],
+  "questions": [
+    {"question": "MCP conecta agentes a quais ferramentas?", "expected_documents": ["mcp-pt"]},
+    {"question": "Como RAG recupera documentos para contexto?", "expected_documents": ["rag-pt"]},
+    {"question": "Where does an outbox store pending events?", "expected_documents": ["events-en"]},
+    {"question": "What uses traces and metrics to investigate latency?", "expected_documents": ["telemetry-en"]},
+    {"question": "How do agents access engineering tools?", "expected_documents": ["mcp-pt"]},
+    {"question": "Como investigar latencia com metricas?", "expected_documents": ["telemetry-en"]}
+  ]
+}
