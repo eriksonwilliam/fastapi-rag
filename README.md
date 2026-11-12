@@ -20,15 +20,15 @@ pytest
 ```
 
 The committed fixture contains **4 short documents and 6 questions in PT/EN**.
-With the default hashing embedder, the measured mean document recall in the top
+In the original experiment at commit e49d3ba (before score filtering), the default hashing embedder measured mean document recall in the top
 3 chunks is **0.8333**, and mean reciprocal rank over deduplicated document IDs
 is **0.7222**. One cross-language question misses its expected document. Tied
 scores retain ingestion order, so a weak result can still appear in the top 3.
 These are diagnostic fixture results, not evidence of production accuracy,
 semantic understanding, answer faithfulness, or multilingual capability.
 Use a representative labeled dataset before comparing embedding models.
-`EMBEDDER=fastembed` selects the optional real adapter; no generation is run by
-this evaluation script. The top-k limit counts chunks, not unique documents.
+`--embedder fastembed` selects the real adapter in the evaluation CLI.
+`EMBEDDER=fastembed` configures the API. No generation is run by the evaluation script. The top-k limit counts chunks, not unique documents.
 
 ### Documentação em português
 
