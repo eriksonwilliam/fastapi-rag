@@ -35,6 +35,17 @@ def test_ingest_and_query_flow():
     body = query.json()
     assert body["sources"]
     assert body["answer"]
+    assert body["abstained"] is False
+
+
+def test_query_without_evidence_reports_abstention():
+    client = _client()
+    client.post("/documents", json={"text": "outbox grava eventos", "doc_id": "doc1"})
+
+    body = client.post("/query", json={"question": "cotacao do dolar", "top_k": 3}).json()
+
+    assert body["abstained"] is True
+    assert body["sources"] == []
 
 
 def test_ingest_generates_doc_id_when_absent():

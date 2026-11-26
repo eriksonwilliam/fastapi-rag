@@ -25,3 +25,6 @@ class Source(BaseModel):
 class QueryResponse(BaseModel):
     answer: str
     sources: list[Source]
+    abstained: bool = Field(
+        description="True quando nenhum trecho passou do score minimo; o LLM nao foi chamado"
+    )

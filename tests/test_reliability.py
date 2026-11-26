@@ -60,8 +60,7 @@ def test_reingest_same_document_does_not_duplicate_sources():
     service = _service()
     service.ingest("doc1", "MCP conecta agentes a ferramentas")
     service.ingest("doc1", "MCP conecta agentes a ferramentas")
-    _, hits = service.query("MCP agentes", top_k=20)
-    assert len(hits) == 1
+    assert len(service.query("MCP agentes", top_k=20).hits) == 1
 
 
 def test_failed_embedding_preserves_previous_document():
