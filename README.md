@@ -122,8 +122,15 @@ curl -X POST localhost:8000/documents -H "Content-Type: application/json" \
 
 curl -X POST localhost:8000/query -H "Content-Type: application/json" \
   -d '{"question":"quem criou o python?","top_k":2}'
-# -> { "answer": "...", "sources": [{ "doc_id": "d1", "text": "...", "score": 0.23 }] }
+# -> { "answer": "...", "sources": [{ "doc_id": "d1", "text": "...", "score": 0.23 }], "abstained": false }
 ```
+
+Sem nenhum trecho acima de `RAG_MIN_SCORE`, o serviço se abstém: devolve
+`"abstained": true`, sem fontes, e **não chama o LLM**. O limiar depende do
+embedder e deve ser calibrado no conjunto de desenvolvimento
+(`scripts/evaluate_retrieval.py --calibrate`). Resultados da primeira
+comparação com modelos reais em
+[docs/evaluation-2026-11-26.md](docs/evaluation-2026-11-26.md).
 
 ## Testes e cobertura
 
@@ -151,7 +158,7 @@ nearby concepts (outbox/inbox, traces/metrics) as distractors. Use identical dat
 top-k and cutoff when comparing embeddings; record model, versions and output.
 Scores across models are not calibrated probabilities. The English model above is
 an example, not a claim of multilingual suitability. No real-model comparison was
-executed in this change.
+executed in this change (it was on 2026-11-26; see below).
 
 `retrieval_baseline_extended.json` records the offline hashing baseline. Recall and
 MRR exclude unanswerable questions. `negative_context_rate` measures how often a
@@ -159,14 +166,46 @@ negative still receives a retrieved chunk above the exclusive `--min-score` cuto
 It does **not** measure generated-answer hallucination or API abstention. At the
 baseline cutoff 0, all four negatives retrieve context: a visible limitation, not a
 successful safety gate. Tune cutoffs on a separate development set, not this report.
-The fixture is still too small for production conclusions. Application query behavior
-is unchanged; it does not yet abstain automatically.
+The fixture is still too small for production conclusions.
+
+## Abstention and real-model comparison (2026-11-26)
+
+`/query` now abstains when no chunk scores above `RAG_MIN_SCORE`: the response
+carries `"abstained": true`, a fixed answer, no sources, and **the LLM is not
+called**. A generator given empty context tends to answer from its own
+knowledge, which is what retrieval augmentation is meant to prevent. The
+default cutoff (0.0) only drops chunks with no similarity at all; calibrate a
+real value per embedder:
+
+```bash
+python scripts/evaluate_retrieval.py --dataset scripts/retrieval_cases_extended.json \
+  --embedder fastembed --model sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2 \
+  --calibrate --summary
+```
+
+A held-out set (`retrieval_cases_heldout.json`, 16 categorized questions) is
+used only to report a cutoff chosen on the development set. First real-model
+run, cutoff chosen on development and applied to held-out:
+
+| Embedder | R@3 | P@3 | MRR | Negatives with context |
+| --- | --- | --- | --- | --- |
+| hashing (offline) | 0.250 | 0.194 | 0.250 | 25% |
+| `BAAI/bge-small-en-v1.5` | 0.694 | 0.556 | 0.667 | 25% |
+| `paraphrase-multilingual-MiniLM-L12-v2` | 0.861 | 0.750 | 0.917 | 0% |
+
+The hashing cutoff did not transfer: it abstained on every cross-language
+held-out question. Margins with the multilingual model are thin. Full
+tables, per-category results and limitations:
+[docs/evaluation-2026-11-26.md](docs/evaluation-2026-11-26.md).
 
 ### Next milestones
 
-1. Expand and separately label development/held-out datasets; execute comparisons.
-2. Exercise crash recovery, backups and embedding metadata validation for the optional SQLite adapter.
-3. Define abstention and evaluate generated answers separately from retrieval.
+1. Evaluate generated answers (faithfulness, citations) separately from retrieval,
+   with a real LLM.
+2. Answer-level grounding check for questions that share vocabulary with the corpus
+   but whose answer is not in it.
+3. Larger, independently written held-out set, including conflicting documents.
+4. Exercise crash recovery, backups and embedding metadata validation for the optional SQLite adapter.
 
 
 ## Optional local persistence (SQLite)
