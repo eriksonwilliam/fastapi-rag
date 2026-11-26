@@ -1,0 +1,280 @@
+{
+  "scope": "document retrieval on a small PT/EN fixture",
+  "dataset": "retrieval_cases_extended.json",
+  "top_k_chunks": 3,
+  "embedder": "fastembed",
+  "model": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+  "calibrated_on_this_dataset": true,
+  "documents": 12,
+  "questions": 18,
+  "min_score_exclusive": 0.4438933920875424,
+  "answerable_questions": 14,
+  "negative_questions": 4,
+  "mean_recall_at_k": 0.9285714285714286,
+  "mean_precision_at_k": 0.7380952380952381,
+  "mean_reciprocal_rank": 0.9285714285714286,
+  "answerable_abstention_rate": 0.0,
+  "negative_context_rate": 0.0,
+  "by_category": {
+    "answerable": {
+      "questions": 14,
+      "abstained": 0
+    },
+    "negative": {
+      "questions": 4,
+      "abstained": 4
+    }
+  },
+  "results": [
+    {
+      "question": "MCP conecta agentes a quais ferramentas?",
+      "category": "answerable",
+      "retrieved_documents": [
+        "mcp-pt"
+      ],
+      "top_score": 0.7931,
+      "answerable": true,
+      "abstained": false,
+      "recall_at_k": 1.0,
+      "precision_at_k": 1.0,
+      "negative_has_context": null,
+      "reciprocal_rank": 1.0
+    },
+    {
+      "question": "Como RAG recupera documentos para contexto?",
+      "category": "answerable",
+      "retrieved_documents": [
+        "rag-pt"
+      ],
+      "top_score": 0.8536,
+      "answerable": true,
+      "abstained": false,
+      "recall_at_k": 1.0,
+      "precision_at_k": 1.0,
+      "negative_has_context": null,
+      "reciprocal_rank": 1.0
+    },
+    {
+      "question": "Where does an outbox store pending events?",
+      "category": "answerable",
+      "retrieved_documents": [
+        "events-en",
+        "inbox-pt"
+      ],
+      "top_score": 0.7054,
+      "answerable": true,
+      "abstained": false,
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.5,
+      "negative_has_context": null,
+      "reciprocal_rank": 1.0
+    },
+    {
+      "question": "What uses traces and metrics to investigate latency?",
+      "category": "answerable",
+      "retrieved_documents": [
+        "telemetry-en",
+        "trace-pt",
+        "cache-pt"
+      ],
+      "top_score": 0.8251,
+      "answerable": true,
+      "abstained": false,
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.3333333333333333,
+      "negative_has_context": null,
+      "reciprocal_rank": 1.0
+    },
+    {
+      "question": "How do agents access engineering tools?",
+      "category": "answerable",
+      "retrieved_documents": [
+        "mcp-pt"
+      ],
+      "top_score": 0.5797,
+      "answerable": true,
+      "abstained": false,
+      "recall_at_k": 1.0,
+      "precision_at_k": 1.0,
+      "negative_has_context": null,
+      "reciprocal_rank": 1.0
+    },
+    {
+      "question": "Como investigar latencia com metricas?",
+      "category": "answerable",
+      "retrieved_documents": [
+        "telemetry-en"
+      ],
+      "top_score": 0.7091,
+      "answerable": true,
+      "abstained": false,
+      "recall_at_k": 1.0,
+      "precision_at_k": 1.0,
+      "negative_has_context": null,
+      "reciprocal_rank": 1.0
+    },
+    {
+      "question": "Como evitar repetir efeitos de eventos com inbox?",
+      "category": "answerable",
+      "retrieved_documents": [
+        "inbox-pt",
+        "events-en"
+      ],
+      "top_score": 0.8314,
+      "answerable": true,
+      "abstained": false,
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.5,
+      "negative_has_context": null,
+      "reciprocal_rank": 1.0
+    },
+    {
+      "question": "How do retries handle transient failures?",
+      "category": "answerable",
+      "retrieved_documents": [
+        "retry-en",
+        "cache-pt"
+      ],
+      "top_score": 0.7086,
+      "answerable": true,
+      "abstained": false,
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.5,
+      "negative_has_context": null,
+      "reciprocal_rank": 1.0
+    },
+    {
+      "question": "Para onde vao mensagens que esgotaram tentativas?",
+      "category": "answerable",
+      "retrieved_documents": [
+        "dlq-pt"
+      ],
+      "top_score": 0.6846,
+      "answerable": true,
+      "abstained": false,
+      "recall_at_k": 1.0,
+      "precision_at_k": 1.0,
+      "negative_has_context": null,
+      "reciprocal_rank": 1.0
+    },
+    {
+      "question": "What decides access to a resource?",
+      "category": "answerable",
+      "retrieved_documents": [
+        "auth-en"
+      ],
+      "top_score": 0.6162,
+      "answerable": true,
+      "abstained": false,
+      "recall_at_k": 1.0,
+      "precision_at_k": 1.0,
+      "negative_has_context": null,
+      "reciprocal_rank": 1.0
+    },
+    {
+      "question": "Como invalidar caches quando os dados mudam?",
+      "category": "answerable",
+      "retrieved_documents": [
+        "events-en"
+      ],
+      "top_score": 0.4499,
+      "answerable": true,
+      "abstained": false,
+      "recall_at_k": 0.0,
+      "precision_at_k": 0.0,
+      "negative_has_context": null,
+      "reciprocal_rank": 0.0
+    },
+    {
+      "question": "Como um trace correlaciona spans?",
+      "category": "answerable",
+      "retrieved_documents": [
+        "trace-pt",
+        "telemetry-en"
+      ],
+      "top_score": 0.8398,
+      "answerable": true,
+      "abstained": false,
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.5,
+      "negative_has_context": null,
+      "reciprocal_rank": 1.0
+    },
+    {
+      "question": "Should metric labels use individual customer identifiers?",
+      "category": "answerable",
+      "retrieved_documents": [
+        "metrics-en"
+      ],
+      "top_score": 0.7696,
+      "answerable": true,
+      "abstained": false,
+      "recall_at_k": 1.0,
+      "precision_at_k": 1.0,
+      "negative_has_context": null,
+      "reciprocal_rank": 1.0
+    },
+    {
+      "question": "Como evitar dependencias ciclicas em monolito modular?",
+      "category": "answerable",
+      "retrieved_documents": [
+        "modulith-pt"
+      ],
+      "top_score": 0.8117,
+      "answerable": true,
+      "abstained": false,
+      "recall_at_k": 1.0,
+      "precision_at_k": 1.0,
+      "negative_has_context": null,
+      "reciprocal_rank": 1.0
+    },
+    {
+      "question": "Qual a cotacao do dolar agora?",
+      "category": "negative",
+      "retrieved_documents": [],
+      "top_score": 0.1543,
+      "answerable": false,
+      "abstained": true,
+      "recall_at_k": null,
+      "precision_at_k": null,
+      "negative_has_context": false,
+      "reciprocal_rank": 0.0
+    },
+    {
+      "question": "Who won the football world cup in 2026?",
+      "category": "negative",
+      "retrieved_documents": [],
+      "top_score": 0.1072,
+      "answerable": false,
+      "abstained": true,
+      "recall_at_k": null,
+      "precision_at_k": null,
+      "negative_has_context": false,
+      "reciprocal_rank": 0.0
+    },
+    {
+      "question": "Qual medicamento devo tomar para febre?",
+      "category": "negative",
+      "retrieved_documents": [],
+      "top_score": 0.0047,
+      "answerable": false,
+      "abstained": true,
+      "recall_at_k": null,
+      "precision_at_k": null,
+      "negative_has_context": false,
+      "reciprocal_rank": 0.0
+    },
+    {
+      "question": "What is the password for the production database?",
+      "category": "negative",
+      "retrieved_documents": [],
+      "top_score": 0.4439,
+      "answerable": false,
+      "abstained": true,
+      "recall_at_k": null,
+      "precision_at_k": null,
+      "negative_has_context": false,
+      "reciprocal_rank": 0.0
+    }
+  ]
+}

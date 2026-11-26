@@ -1,0 +1,161 @@
+{
+  "notes": "Held-out handwritten fixture. Same 12 documents as retrieval_cases_extended.json (the development set), new questions written after the development results. Use it only to report a cutoff chosen on the development set, never to tune one. insufficient_context questions share vocabulary with the corpus but the answer is not in it: retrieval scores alone are not expected to catch them.",
+  "documents": [
+    {
+      "id": "mcp-pt",
+      "text": "MCP conecta agentes a ferramentas de engenharia com contratos explicitos."
+    },
+    {
+      "id": "rag-pt",
+      "text": "RAG recupera trechos de documentos para fornecer contexto ao modelo."
+    },
+    {
+      "id": "events-en",
+      "text": "An outbox stores business changes and pending events in the same database transaction."
+    },
+    {
+      "id": "telemetry-en",
+      "text": "Observability uses traces and metrics to investigate latency and errors."
+    },
+    {
+      "id": "inbox-pt",
+      "text": "A inbox registra identificadores de eventos processados para evitar repetir efeitos locais."
+    },
+    {
+      "id": "retry-en",
+      "text": "Retries repeat transient failures with exponential backoff and jitter."
+    },
+    {
+      "id": "dlq-pt",
+      "text": "Uma dead letter queue recebe mensagens que esgotaram as tentativas de processamento."
+    },
+    {
+      "id": "auth-en",
+      "text": "Authentication verifies identity. Authorization decides access to a resource."
+    },
+    {
+      "id": "cache-pt",
+      "text": "Caches precisam de prazo de validade e estrategia de invalidacao para dados alterados."
+    },
+    {
+      "id": "trace-pt",
+      "text": "Um trace correlaciona spans de uma requisicao entre servicos."
+    },
+    {
+      "id": "metrics-en",
+      "text": "Metric labels should use route templates rather than individual customer identifiers."
+    },
+    {
+      "id": "modulith-pt",
+      "text": "Um monolito modular define interfaces e impede dependencias ciclicas entre modulos."
+    }
+  ],
+  "questions": [
+    {
+      "question": "What does RAG retrieve to give context to the model?",
+      "expected_documents": [
+        "rag-pt"
+      ],
+      "category": "cross_language"
+    },
+    {
+      "question": "Em que transacao a outbox grava os eventos pendentes?",
+      "expected_documents": [
+        "events-en"
+      ],
+      "category": "cross_language"
+    },
+    {
+      "question": "What receives messages after the processing attempts run out?",
+      "expected_documents": [
+        "dlq-pt"
+      ],
+      "category": "cross_language"
+    },
+    {
+      "question": "What correlates the spans of one request across services?",
+      "expected_documents": [
+        "trace-pt"
+      ],
+      "category": "cross_language"
+    },
+    {
+      "question": "What does an inbox record to avoid repeating local effects?",
+      "expected_documents": [
+        "inbox-pt"
+      ],
+      "category": "cross_language"
+    },
+    {
+      "question": "What verifies identity before access is decided?",
+      "expected_documents": [
+        "auth-en"
+      ],
+      "category": "answerable"
+    },
+    {
+      "question": "Caches precisam de qual estrategia para dados alterados?",
+      "expected_documents": [
+        "cache-pt"
+      ],
+      "category": "answerable"
+    },
+    {
+      "question": "Should metric labels use route templates?",
+      "expected_documents": [
+        "metrics-en"
+      ],
+      "category": "answerable"
+    },
+    {
+      "question": "O que um monolito modular define entre os modulos?",
+      "expected_documents": [
+        "modulith-pt"
+      ],
+      "category": "answerable"
+    },
+    {
+      "question": "Why add jitter to exponential backoff?",
+      "expected_documents": [
+        "retry-en"
+      ],
+      "category": "partial"
+    },
+    {
+      "question": "How many retries should a payment service attempt before giving up?",
+      "expected_documents": [
+        "retry-en"
+      ],
+      "category": "partial"
+    },
+    {
+      "question": "Como funciona a fila de mensagens?",
+      "expected_documents": [
+        "dlq-pt",
+        "inbox-pt",
+        "events-en"
+      ],
+      "category": "ambiguous"
+    },
+    {
+      "question": "Qual a capital da Australia?",
+      "expected_documents": [],
+      "category": "out_of_domain"
+    },
+    {
+      "question": "Recommend a good pizza recipe.",
+      "expected_documents": [],
+      "category": "out_of_domain"
+    },
+    {
+      "question": "Which Kafka partition key does the outbox use?",
+      "expected_documents": [],
+      "category": "insufficient_context"
+    },
+    {
+      "question": "Qual o visibility timeout configurado na fila de producao?",
+      "expected_documents": [],
+      "category": "insufficient_context"
+    }
+  ]
+}

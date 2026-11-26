@@ -35,7 +35,10 @@ def build_store() -> VectorStore:
 
 
 def default_service() -> RagService:
-    return RagService(build_store(), build_llm(), build_embedder())
+    # O limiar depende do embedder (escalas de score diferentes): calibre com
+    # scripts/evaluate_retrieval.py --calibrate no conjunto de desenvolvimento.
+    min_score = float(os.getenv("RAG_MIN_SCORE", "0.0"))
+    return RagService(build_store(), build_llm(), build_embedder(), min_score=min_score)
 
 
 app = create_app(default_service())

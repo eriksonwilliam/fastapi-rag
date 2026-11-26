@@ -34,10 +34,11 @@ def create_app(service: RagService) -> FastAPI:
 
     @app.post("/query", response_model=QueryResponse)
     def query(request: QueryRequest) -> QueryResponse:
-        answer, hits = service.query(request.question, request.top_k)
+        result = service.query(request.question, request.top_k)
         sources = [
-            Source(doc_id=hit.chunk.doc_id, text=hit.chunk.text, score=hit.score) for hit in hits
+            Source(doc_id=hit.chunk.doc_id, text=hit.chunk.text, score=hit.score)
+            for hit in result.hits
         ]
-        return QueryResponse(answer=answer, sources=sources)
+        return QueryResponse(answer=result.answer, sources=sources, abstained=result.abstained)
 
     return app
